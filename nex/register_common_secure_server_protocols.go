@@ -16,6 +16,7 @@ import (
 	ranking "github.com/PretendoNetwork/nex-protocols-go/v2/ranking/splatoon"
 	secure "github.com/PretendoNetwork/nex-protocols-go/v2/secure-connection"
 	"github.com/PretendoNetwork/splatoon/globals"
+	ranking_impl "github.com/PretendoNetwork/splatoon/nex/ranking"
 )
 
 func CreateReportDBRecord(_ types.PID, _ types.UInt32, _ types.QBuffer) error {
@@ -57,5 +58,7 @@ func registerCommonSecureServerProtocols() {
 
 	rankingProtocol := ranking.NewProtocol(globals.SecureEndpoint)
 	globals.SecureEndpoint.RegisterServiceProtocol(rankingProtocol)
+	rankingProtocol.GetCompetitionRankingScore = ranking_impl.GetCompetitionRankingScore
+	rankingProtocol.UploadCompetitionRankingScore = ranking_impl.UploadCompetitionRankingScore
 	commonranking.NewCommonProtocol(rankingProtocol)
 }
